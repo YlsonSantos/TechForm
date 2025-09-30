@@ -1,5 +1,4 @@
-// src/mocks/instituicoes.ts
-import { Instituicao } from "@/types/domain";
+import { Instituicao } from "@/app/types/domain";
 
 export const instituicoesMock: Instituicao[] = [
   {

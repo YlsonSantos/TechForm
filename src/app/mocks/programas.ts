@@ -1,5 +1,4 @@
-// src/mocks/programas.ts
-import { Programa } from "@/types/domain";
+import { Programa } from "@/app/types/domain";
 
 export const programasMock: Programa[] = [
   {

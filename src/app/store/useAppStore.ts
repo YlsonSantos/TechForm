@@ -1,7 +1,6 @@
-// src/store/useAppStore.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { FiltrosPrograma } from "@/types/domain";
+import { FiltrosPrograma } from "@/app/types/domain";
 
 interface AppState {
   filtros: FiltrosPrograma;
@@ -26,22 +25,22 @@ export const useAppStore = create<AppState>()(
     (set) => ({
       filtros: filtrosIniciais,
       favoritos: [],
-
+      
       setFiltro: (novoFiltro) =>
         set((state) => ({
           filtros: { ...state.filtros, ...novoFiltro },
         })),
-
+      
       setBusca: (busca) =>
         set((state) => ({
           filtros: { ...state.filtros, busca },
         })),
-
+      
       resetFiltros: () =>
         set({
           filtros: filtrosIniciais,
         }),
-
+      
       toggleFavorito: (programaId) =>
         set((state) => ({
           favoritos: state.favoritos.includes(programaId)

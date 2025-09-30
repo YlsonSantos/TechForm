@@ -1,4 +1,3 @@
-// src/types/domain.ts
 export type Area = "frontend" | "backend" | "dados" | "cloud" | "ux" | "mobile" | "seguranca";
 
 export type Modalidade = "presencial" | "online" | "hibrido";

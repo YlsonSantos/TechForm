@@ -1,14 +1,13 @@
-// src/lib/programas.service.ts
-import { programasMock } from "@/mocks/programas";
-import { instituicoesMock } from "@/mocks/instituicoes";
-import { Programa, FiltrosPrograma, Instituicao } from "@/types/domain";
+import { programasMock } from "@/app/mocks/programas";
+import { instituicoesMock } from "@/app/mocks/instituicoes";
+import { Programa, FiltrosPrograma, Instituicao } from "@/app/types/domain";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const programasService = {
   async listarProgramas(filtros?: FiltrosPrograma): Promise<Programa[]> {
     await delay(300);
-
+    
     let resultado = [...programasMock];
 
     if (filtros) {

@@ -1,65 +1,80 @@
-import { Instituicao } from "@/types/domain";
-import { Box, Flex, Heading, Text, Link as ChakraLink, Button, Image } from "@chakra-ui/react";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
+"use client";
+
+import {
+  Box,
+  Heading,
+  Text,
+  Button,
+  VStack,
+  Flex,
+  Image,
+  Link as ChakraLink,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { ExternalLink } from "lucide-react";
+import { Instituicao } from "@/app/types/domain";
+import NextLink from "next/link";
 
 interface InstitutionCardProps {
   instituicao: Instituicao;
 }
 
 const InstitutionCard = ({ instituicao }: InstitutionCardProps) => {
+  const cardBg = useColorModeValue("white", "gray.800");
+  const cardShadow = useColorModeValue("lg", "dark-lg");
+
   return (
     <Box
       borderWidth="1px"
       borderRadius="lg"
+      overflow="hidden"
       p="6"
-      _hover={{ boxShadow: "lg" }}
+      bg={cardBg}
+      shadow={cardShadow}
       transition="all 0.3s"
-      h="full"
-      display="flex"
-      flexDirection="column"
+      _hover={{ transform: "scale(1.02)" }}
     >
-      <Flex alignItems="flex-start" gap="4" mb="4">
-        <Image
-          src={instituicao.logoUrl}
-          alt={`Logo ${instituicao.nome}`}
-          boxSize="16"
-          objectFit="cover"
-          borderRadius="lg"
-        />
-        <Box flex="1">
-          <Heading size="md">{instituicao.nome}</Heading>
-          <ChakraLink
-            href={instituicao.site}
-            isExternal
-            color="blue.500"
-            _hover={{ textDecoration: "underline" }}
-            fontSize="sm"
-            display="flex"
-            alignItems="center"
-            gap="1"
-            mt="1"
-          >
-            {instituicao.site}
-            <ExternalLinkIcon mx="2px" />
-          </ChakraLink>
-        </Box>
-      </Flex>
-      <Box flex="1">
+      <VStack spacing={4} align="stretch">
+        <Flex alignItems="flex-start" gap="4">
+          <Image
+            src={instituicao.logoUrl}
+            alt={`Logo ${instituicao.nome}`}
+            boxSize="64px"
+            rounded="lg"
+            objectFit="cover"
+          />
+          <Box flex="1">
+            <Heading as="h3" size="md">
+              {instituicao.nome}
+            </Heading>
+            <ChakraLink
+              as={NextLink}
+              href={instituicao.site}
+              isExternal
+              color="primary.500"
+              _hover={{ textDecoration: "underline" }}
+              display="flex"
+              alignItems="center"
+              gap="1"
+              mt="1"
+              fontSize="sm"
+            >
+              {instituicao.site}
+              <ExternalLink size={12} />
+            </ChakraLink>
+          </Box>
+        </Flex>
+
         <Text fontSize="sm" color="gray.500">
           {instituicao.descricao}
         </Text>
-      </Box>
-      <Button
-        as={ChakraLink}
-        href={instituicao.site}
-        isExternal
-        variant="outline"
-        w="full"
-        mt="4"
-        _hover={{ textDecoration: "none" }}
-      >
-        Visitar site
-      </Button>
+      </VStack>
+
+      <NextLink href={instituicao.site} passHref>
+        <Button as="a" variant="outline" w="full" mt="4" isExternal>
+          Visitar site
+        </Button>
+      </NextLink>
     </Box>
   );
 };

@@ -1,12 +1,20 @@
+"use client";
+
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { Button } from "@/components/ui/button";
+import { usePathname } from "next/navigation";
+import {
+  Button,
+  Box,
+  Flex,
+  HStack,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { BookOpen, Heart, Building2, User, GraduationCap } from "lucide-react";
-import { cn } from "@/lib/utils"; // Supondo que você manterá o utilitário cn
 
 const Navigation = () => {
-  const router = useRouter();
-
+  const pathname = usePathname();
+  
   const navItems = [
     { path: "/", label: "Início", icon: GraduationCap },
     { path: "/programas", label: "Programas", icon: BookOpen },
@@ -15,57 +23,94 @@ const Navigation = () => {
     { path: "/perfil", label: "Perfil", icon: User },
   ];
 
+  const activeBgColor = useColorModeValue("gray.100", "gray.700");
+  const defaultBgColor = useColorModeValue("transparent", "transparent");
+
   return (
-    <nav className={cn("sticky top-0 z-50 border-b bg-background/80 backdrop-blur-sm")}>
-      <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2">
-            <GraduationCap className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+    <Box
+      as="nav"
+      position="sticky"
+      top="0"
+      zIndex="50"
+      borderBottom="1px"
+      borderColor="gray.200"
+      bg="whiteAlpha.800"
+      backdropFilter="saturate(180%) blur(5px)"
+      _dark={{
+        bg: "blackAlpha.800",
+        borderColor: "gray.700",
+      }}
+    >
+      <Flex
+        h="16"
+        alignItems="center"
+        justifyContent="space-between"
+        maxW="container.xl"
+        mx="auto"
+        px="4"
+      >
+        <Link href="/">
+          <Flex alignItems="center" gap="2">
+            <GraduationCap size={32} />
+            <Text
+              fontSize="xl"
+              fontWeight="bold"
+              bgGradient="linear(to-r, #3B82F6, #8B5CF6)"
+              bgClip="text"
+            >
               TechForma
-            </span>
-          </Link>
+            </Text>
+          </Flex>
+        </Link>
 
-          <div className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = router.pathname === item.path;
+        {/* Desktop Navigation */}
+        <HStack spacing="1" display={{ base: "none", md: "flex" }}>
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.path;
+            
+            return (
+              <Link key={item.path} href={item.path}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  leftIcon={<Icon size={16} />}
+                  bg={isActive ? activeBgColor : defaultBgColor}
+                  _hover={{ bg: activeBgColor }}
+                  color={isActive ? "blue.500" : "gray.600"}
+                  _dark={{ color: isActive ? "blue.300" : "gray.300" }}
+                >
+                  {item.label}
+                </Button>
+              </Link>
+            );
+          })}
+        </HStack>
 
-              return (
-                <Link key={item.path} href={item.path}>
-                  <Button
-                    variant={isActive ? "default" : "ghost"}
-                    size="sm"
-                    className="gap-2"
-                  >
-                    <Icon className="h-4 w-4" />
-                    {item.label}
-                  </Button>
-                </Link>
-              );
-            })}
-          </div>
-
-          <div className="md:hidden flex items-center space-x-1">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = router.pathname === item.path;
-
-              return (
-                <Link key={item.path} href={item.path}>
-                  <Button
-                    variant={isActive ? "default" : "ghost"}
-                    size="icon"
-                  >
-                    <Icon className="h-4 w-4" />
-                  </Button>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </nav>
+        {/* Mobile Navigation */}
+        <HStack spacing="1" display={{ base: "flex", md: "none" }}>
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.path;
+            
+            return (
+              <Link key={item.path} href={item.path}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  bg={isActive ? activeBgColor : defaultBgColor}
+                  _hover={{ bg: activeBgColor }}
+                  color={isActive ? "blue.500" : "gray.600"}
+                  _dark={{ color: isActive ? "blue.300" : "gray.300" }}
+                >
+                  <Icon size={16} />
+                </Button>
+              </Link>
+            );
+          })}
+        </HStack>
+      </Flex>
+    </Box>
   );
 };
 
